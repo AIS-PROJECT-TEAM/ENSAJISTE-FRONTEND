@@ -1,0 +1,71 @@
+import axios from "axios";
+import { endpoint } from "../Constants/environment";
+import jwt from "jsonwebtoken"
+
+axios.defaults.withCredentials = true;
+
+//Configuring Interceptors to check for access token validity before 
+axios.interceptors.request.use(async (request) => {
+    if(request.headers.Authorization){
+        const isvalid = jwt.verify(request.headers.Authorization.split(" ")[1],process.env.SECRET)
+        console.log(isvalid);
+    }
+    return request;
+})
+
+export const headersJson = {
+    'Content-Type': 'application/json',
+    'Accept': '*/*'
+}
+
+export const headersForm = {
+    'Content-Type': 'multipart/form-data',
+    'Accept': '*/*'
+}
+
+export const headersWWW = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': '*/*'
+}
+
+export const getRequest = async (url,withCredentials = false, headers = headersJson) => {
+    let the_url = endpoint + url;
+    let response = {}
+    try{
+        var temp = await axios.get(the_url,{headers, withCredentials})
+        response = {
+            error : false,
+            data : temp.data
+        }
+    }catch(e){
+        response = {
+            status : e.status,
+            error: true,
+            message : e.message
+        }
+    }
+    
+    return response;
+}
+
+export const postRequest = async (url, props ={}, withCredentials = false, headers = headersJson) => {
+    let the_url = endpoint + url;
+    let result = {};
+    try{
+        var temp = await axios.post(the_url,props,{headers, withCredentials})
+        result = {
+            data : temp.data,
+            error : false
+        }
+    }catch(e){
+        result = {
+            status : e.status,
+            error: true,
+            message : e.message
+        }
+    }
+    
+    return result;
+}
+
+
