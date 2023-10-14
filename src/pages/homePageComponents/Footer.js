@@ -8,7 +8,7 @@ export default function Footer() {
             </div>
             <div class="credits">
 
-                Designed by <a href="https://bootstrapmade.com/">CHANTIR WADIE made</a>
+                Designed by <a href="https://bootstrapmade.com/">AIS PROJECT TEAM</a>
             </div>
         </div>
 
